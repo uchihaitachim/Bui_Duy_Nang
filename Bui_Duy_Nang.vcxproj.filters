@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bui_Duy_Nang.c">
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="toan.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
