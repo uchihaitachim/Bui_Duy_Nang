@@ -4,14 +4,20 @@
 #include"toan.h"
 
 void main() {
-	int a, b, c, d;
-	a = cong(3, 4);
-	b = tru(9, 5);
-	c = nhan(1, 7);
-	d = chia(9, 3);
-	printf("%d\n", a);
-	printf("%d\n", b);
-	printf("%d\n", c);
-	printf("%d\n", d);
+	int myArr[5];
+	int size = 5;	
+	nhap(myArr, size);
+	int x;
+	x=tongmang(myArr, size);
+	float tble;
+	printf("\n-----------\n");
+	tbsole(myArr, size);
+	printf("\n----------- \n");
+	printf("sum:%d", x);
+	printf("\n-----------\n");
+	inmax(myArr, size);
+	printf("\n-----------\n");
+	thayso0(myArr, size);
+	printf("\n-----------\n");
+	in_so_nguyen_to(myArr, size);
 }
- 
