@@ -1,75 +1,79 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
-#include<stdio.h>
+#include <stdio.h>
 #include<math.h>
-#include"toan.h"
+#include<stdlib.h>
 typedef struct {
-	int tu;
-	int mau;
-}phan_so_t;
-
-// Hàm tính UCLN (Ước chung lớn nhất)
-int ucln(int a, int b) {
-	while (b != 0) {
-		int temp = b;
-		b = a % b;
-		a = temp;
-	}
-	return a;
+    char Ten[30];
+    char GioiTinh[5];
+    int Tuoi;
+    float DiemToan, DiemVan, DiemTB;
+    char XepLoai[10];
+}HocSinh;
+void Nhaptths(HocSinh* sv) {
+    printf("Nhap ten hs:");
+    getchar();
+    scanf("%[^\n]", sv->Ten);
+    printf("Nhap gioi tinh:");
+    scanf("%s", sv->GioiTinh);
+    printf("Nhap tuoi:");
+    scanf("%d", &sv->Tuoi);
+    printf("Nhap diem toan:");
+    scanf("%f", &sv->DiemToan);
+    printf("Nhap diem van:");
+    scanf("%f", &sv->DiemVan);;
+    sv->DiemTB = (sv->DiemToan + sv->DiemVan) / 2;
+    printf("Diem trung binh: %.2f\n", sv->DiemTB);
 }
-phan_so_t rutGon(phan_so_t ps) {
-	int u = ucln(ps.tu, ps.mau);
-	ps.tu /= u;
-	ps.mau /= u;
-	return ps;
+void InSV(HocSinh *sv) {
+    printf("Ho va Ten: %s\n", sv->Ten);
+    printf("Tuoi: %d\n", sv->Tuoi);
+    printf("Gioi tinh: %s\n", sv->GioiTinh);
+    printf("Diem toan: %.2f\n", sv->DiemToan);
+    printf("Dien van: %.2f\n", sv->DiemVan);
+    printf("Diem trung binh: %.2f\n", sv->DiemTB);
 }
-phan_so_t NhanPhanSo(phan_so_t A, phan_so_t B) {
-	phan_so_t phansokq;
-	phansokq.tu = A.tu * B.tu;
-	phansokq.mau = A.mau * B.mau;
-	return rutGon(phansokq);
+    HocSinh* HsDtbMax(HocSinh* sv, int n) {
+    HocSinh* HsMax = &sv[0];
+    for (int i = 0;i < n;i++) {
+        if (sv[i].DiemTB > HsMax->DiemTB) {
+            HsMax = &sv[i];
+        }
+    }
+    return HsMax;
+} 
+    void SXDiemTB(HocSinh *sv,int n){
+        for (int i = 0;i < n-1;i++) {
+            for (int j = i + 1;j < n;j++) {
+                if ((sv + i)->DiemTB < (sv + j)->DiemTB) {
+                    HocSinh x = *(sv + i);
+                    *(sv + i) = *(sv + j);
+                    *(sv + j) = x;
+                }
+
+            }
+        }
+    }
+int main() {  
+    int n; 
+    printf("Nhap so hoc sinh:");
+    scanf("%d", &n);
+    HocSinh* kt = (HocSinh*)malloc(n * sizeof(HocSinh));
+    for (int i = 0;i < n;i++) {
+        printf("-------Nhap hoc sinh thu %d-------\n", i + 1);
+        Nhaptths(&kt[i]);
+    }
+    for (int i = 0;i < n;i++) {
+        printf("-------Hoc sinh thu %d-------\n",i+1 );
+        InSV(&kt[i]);
+    }
+    HocSinh *HsMax=HsDtbMax(kt,n);
+    printf("\n---------Hoc sinh co diem trung binh cao nhat----------\n");
+    InSV(HsMax);
+    SXDiemTB(kt, n);
+    printf("\n---------Danh sach sinh vien theo diem trung binh---------\n");
+    for (int a = 0;a < n;a++) {
+        InSV(&kt[a]);
+    }
+    free(kt);
+    return 0;
 }
-phan_so_t TruPhanSo(phan_so_t A, phan_so_t B) {
-	phan_so_t phansokq;
-	phansokq.tu = A.tu * B.mau - B.tu * A.mau; // Quy đồng và trừ tử
-	phansokq.mau = A.mau * B.mau;             // Nhân mẫu
-	return rutGon(phansokq);                  // Rút gọn kết quả
-}
-// Hàm cộng phân số
-phan_so_t CongPhanSo(phan_so_t A, phan_so_t B) {
-	phan_so_t phansokq;
-	phansokq.tu = A.tu * B.mau + B.tu * A.mau; // Quy đồng và cộng tử
-	phansokq.mau = A.mau * B.mau;             // Nhân mẫu
-	return rutGon(phansokq);                  // Rút gọn kết quả
-}
-
-// Hàm chia phân số
-phan_so_t ChiaPhanSo(phan_so_t A, phan_so_t B) {
-	phan_so_t phansokq;
-	phansokq.tu = A.tu * B.mau;               // Nhân tử với mẫu
-	phansokq.mau = A.mau * B.tu;              // Nhân mẫu với tử
-	return rutGon(phansokq);                  // Rút gọn kết quả
-}
-void main() {
-	phan_so_t A;
-	phan_so_t B;
-
-	A.tu = 4;
-	A.mau = 2;
-
-	B.tu = 2;
-	B.mau = 4;
-	phan_so_t kqcong = NhanPhanSo(A, B);
-	phan_so_t kqnhan = CongPhanSo(A, B);
-	phan_so_t kqtru = ChiaPhanSo(A, B);
-	phan_so_t kqchia = TruPhanSo(A, B);
-	printf("%d/%d\n", kqcong.tu, kqcong.mau);
-	printf("%d/%d\n", kqtru.tu, kqtru.mau);
-	printf("%d/%d\n", kqnhan.tu, kqnhan.mau);
-	printf("%d/%d", kqchia.tu, kqchia.mau);
-
-}
-
-
-
-
-
