@@ -17,14 +17,15 @@ typedef struct {
 	char y;
 }test_struct_t;
 typedef union {
-	int x;
-	char y;
+	unsigned short x;
+	unsigned char y[2];
 }test_union_t;
 void main() {
-	byte_t x = { 0 };
-	x.bit_0 = 1;
-	x.bit_2 = 1;
-	x.bit_3 = 1;
-	x.bit_5 = 1;
-	x.bit_6 = 1;
-}
+	unsigned short val = 0x1234;
+	unsigned char low;
+	unsigned char high;
+	test_union_t n;
+	n.x = val;
+	low = n.y[0];
+	high = n.y[1];
+} 
