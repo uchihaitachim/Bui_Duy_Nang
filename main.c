@@ -2,25 +2,27 @@
 #include <stdio.h>
 #include<stdint.h>
 #include<malloc.h>
-typedef union {
-	struct {
-		char bit_0 : 1;
-		char bit_1 : 1;
-		char bit_2 : 1;
-		char bit_3 : 1;
-		char bit_4 : 1;
-		char bit_5 : 1;
-		char bit_6 : 1;
-		char bit_7 : 1;
-	}bit;
-	unsigned char toan_bo_gia_tri;
+typedef struct {
+	int value;
+	void* previous_node;
 
-}test_union_t;
+}node_t;
+typedef struct {
+	int len;
+	node_t* last_node;
+}linked_list_t;
+void add(linked_list_t* ll, int val) {
+	node_t* new_node = malloc(sizeof(node_t));
+	new_node->value = val;
+	new_node->previous_node = ll->last_node;
+	ll->last_node = new_node;
+	ll->len++;
+}
+linked_list_t ll;
 void main() {
-	test_union_t x = { 0 };
-	x.bit.bit_0 = 1;
-	x.bit.bit_2 = 1;
-	int temp=x.toan_bo_gia_tri;
-	// 0x00000101 = 5= temp
+	add(&ll, 1);
+	add(&ll, 2);
+	add(&ll, 3);
+	add(&ll, 4);
 	
 }	
