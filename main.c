@@ -2,27 +2,38 @@
 #include <stdio.h>
 #include<stdint.h>
 #include<malloc.h>
-typedef struct {
-	int value;
-	void* previous_node;
-
-}node_t;
-typedef struct {
-	int len;
-	node_t* last_node;
-}linked_list_t;
-void add(linked_list_t* ll, int val) {
-	node_t* new_node = malloc(sizeof(node_t));
-	new_node->value = val;
-	new_node->previous_node = ll->last_node;
-	ll->last_node = new_node;
-	ll->len++;
+#include<math.h>
+float fx(float x) {
+	return x * x;
 }
-linked_list_t ll;
+float gx(float x) {
+	return 2 * x * x + x + 1;
+}
+float tx(float x) {
+	return 2 * sin(x) + 1;
+}
+float tinhTichPhan(float a, float b) {
+	float S = 0;
+	float h = (b - a) / 1000;
+	for (int i = 1;i < 1000;i++) {
+		float db = fx(a + h*i);
+		float dl = fx(a + (i + 1) * h);
+		S += ((dl + db) * h) / 2;
+	} 
+	return S;
+}
+float function(int x, char y) {
+	printf("ham function da duoc chay(x=%d)...\n",x);   
+}
+void function_1() {
+	printf("day la ham 1\n");
+} 
 void main() {
-	add(&ll, 1);
-	add(&ll, 2);
-	add(&ll, 3);
-	add(&ll, 4);
-	
-}	
+	float (*ten_con_tro_ham)(int, char); 
+	ten_con_tro_ham = function;
+	ten_con_tro_ham(1, 2);
+	void(*ten_contr_ham_1)();
+	ten_contr_ham_1 = function_1;
+	ten_contr_ham_1();
+	  
+}
